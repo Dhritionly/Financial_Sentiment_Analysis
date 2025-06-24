@@ -128,4 +128,4 @@ For any questions or collaborations, feel free to reach out.
 
 Dhritionly
 
-GitHub Profile (Please replace with your actual GitHub profile link)
+[GitHub Profile](https://github.com/Dhritionly/)
