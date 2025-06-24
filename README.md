@@ -1,5 +1,5 @@
 ﻿
-
+# Financial Sentiment Analyis
 
 > ### Project Phases with Python & Gen AI Focus:
 
@@ -134,4 +134,4 @@ This is where Gen AI shines, effectively replacing traditional ML/NLP model trai
 -   **LLM Hallucinations/Consistency:** While powerful, LLMs can sometimes "hallucinate" or provide inconsistent outputs. Careful prompt engineering and post-processing of results are important.
 -   **Nuance vs. Simplicity:** While LLMs are good at nuance, extracting highly structured, consistent financial sentiment (e.g., "is this positive for _this specific bond issue_ versus _the company's overall stock_?") requires very precise prompting and careful validation. Start simple.
 
-This revised approach lets you tackle the project effectively with your current skillset and the power of Gen AI. It's a great way to learn cutting-edge techniques!
+This revised approach used to tackle the project effectively with the power of Gen AI.
