@@ -1,5 +1,5 @@
 ﻿
-# Financial Sentiment Analyis
+# Financial Sentiment Analysis
 
 > ### Project Phases with Python & Gen AI Focus:
 
