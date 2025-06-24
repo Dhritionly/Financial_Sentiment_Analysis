@@ -1,137 +1,131 @@
-﻿
-# Financial Sentiment Analysis
 
-> ### Project Phases with Python & Gen AI Focus:
+# Financial Sentiment Analysis using News Headlines
 
-#### Phase 1: Data Acquisition and Preprocessing (Python)
+## Project Overview
 
-1.  **Identify and Access Financial News Sources:**
+This project focuses on analyzing sentiment from daily news headlines to predict stock market movements. By leveraging Natural Language Processing (NLP) techniques, specifically the Bag-of-Words model and a RandomForestClassifier, this solution aims to classify news sentiment and correlate it with market trends.
+
+## Features
+
+-   **Data Ingestion:** Reads daily news headlines and associated stock market labels (e.g., UP/DOWN).
     
-    -   Continue to use Python for this. Explore financial news APIs (e.g., EODHD, NewsAPI, Alpha Vantage) that provide news headlines and content. These are usually straightforward HTTP requests in Python.
-    -   For publicly available news, ethical web scraping with Python libraries (like `requests` and `BeautifulSoup`) is an option, but always respect website terms of service.
-2.  **Data Collection:**
+-   **Text Preprocessing:** Cleans and transforms raw news headlines, including punctuation removal and lowercasing.
     
-    -   Write Python scripts to fetch news articles. Store headline, content, date, and any relevant company tickers.
-3.  **Basic Data Preprocessing (Python):**
+-   **Feature Engineering:** Utilizes `CountVectorizer` with n-grams to convert text data into numerical features (Bag-of-Words).
     
-    -   **Text Cleaning:** Use Python string methods or regular expressions (`re` module) to remove HTML tags, URLs, special characters, etc.
-    -   **Formatting:** Ensure the text is clean and ready to be sent to the Gen AI model. Lowercasing might be useful, but often Gen AI models handle case variations well.
-
-#### Phase 2: Sentiment Analysis with Generative AI (Python & OpenAI)
-
-This is where Gen AI shines, effectively replacing traditional ML/NLP model training.
-
-1.  **OpenAI API Integration (Python):**
+-   **Sentiment Classification:** Employs a `RandomForestClassifier` to predict market sentiment (represented by the 'Label' column in the dataset) based on news headlines.
     
-    -   Use the `openai` Python library to interact with models like GPT-3.5 Turbo or GPT-4.
-2.  **Prompt Engineering for Sentiment:**
+-   **Performance Evaluation:** Reports on model accuracy using a confusion matrix, accuracy score, and classification report.
     
-    -   This is the core of your "NLP" here. You'll craft prompts that instruct the LLM to perform sentiment analysis.
-    -   **Basic Sentiment:**
-        
-        Python
-        
-        ```
-        prompt = f"Analyze the sentiment of the following financial news article for a general market perspective: '{article_text}'. Is the sentiment 'Positive', 'Negative', or 'Neutral'? Provide only one word."
-        
-        ```
-        
-    -   **Nuanced Sentiment/Explanation:**
-        
-        Python
-        
-        ```
-        prompt = f"Given the financial news article: '{article_text}', classify its sentiment regarding the overall market (Positive, Negative, Neutral). Briefly explain your reasoning in one sentence, focusing on key financial terms."
-        
-        ```
-        
-    -   **Company-Specific Sentiment:**
-        
-        Python
-        
-        ```
-        prompt = f"Considering the company '{company_name}', what is the sentiment of the following financial news article specifically for {company_name}'s stock performance? '{article_text}'. Respond with 'Positive', 'Negative', or 'Neutral', followed by a very brief explanation."
-        
-        ```
-        
-    -   **Extracting Key Phrases:**
-        
-        Python
-        
-        ```
-        prompt = f"Read the following financial news article: '{article_text}'. Identify up to three short phrases or keywords that strongly indicate the sentiment (positive or negative) towards the overall market. List them separated by commas."
-        
-        ```
-        
-    -   **Few-Shot Learning (Optional but powerful):** Provide a couple of examples within your prompt to guide the model's output format and desired sentiment interpretation.
-        
-        Python
-        
-        ```
-        prompt = f"""
-        Analyze the financial sentiment of the news article.
-        Example 1: Text: "Company X reports record profits, shares soar." Sentiment: Positive.
-        Example 2: Text: "Recession fears grow as unemployment rises." Sentiment: Negative.
-        Example 3: Text: "Market flat, awaiting Fed decision." Sentiment: Neutral.
-        
-        Now, analyze this: "{article_text}" Sentiment:
-        """
-        
-        ```
-        
-    -   **Output Parsing:** Your Python code will need to parse the LLM's response to extract the sentiment label (e.g., check if the response starts with "Positive", "Negative", or "Neutral").
-3.  **Iterate and Refine Prompts:**
+
+## Technologies Used
+
+-   **Python**
     
-    -   You'll likely iterate on your prompts to get the most accurate and consistent sentiment analysis from the LLM. This is a key skill in Gen AI.
-
-#### Phase 3: Sentiment-based Market Prediction (Python)
-
-1.  **Aggregate Sentiment (Python):**
+-   **Pandas:** For data manipulation and analysis.
     
-    -   After getting sentiments for many articles, use Python (Pandas is great here) to:
-        -   Calculate daily/weekly average sentiment scores for specific companies or the overall market.
-        -   Count positive/negative/neutral articles per day.
-        -   Group by publication date and relevant entities (if identified).
-2.  **Integrate with Market Data (Python):**
+-   **Scikit-learn:** For machine learning algorithms, including:
     
-    -   Use `yfinance` or a similar Python library to download historical stock prices and market index data (e.g., S&amp;P 500).
-    -   Align your aggregated sentiment data with market data by date.
-3.  **Prediction Logic (Python - Rule-based or Simple ML):**
+    -   `CountVectorizer` for text feature extraction.
+        
+    -   `RandomForestClassifier` for sentiment classification.
+        
+    -   `classification_report`, `confusion_matrix`, `accuracy_score` for model evaluation.
+        
+
+## Dataset
+
+The project uses a CSV file named `Data.csv`, which contains daily news headlines (Top1 to Top25) and a corresponding 'Label' column indicating market movement (likely 0 for down/neutral and 1 for up). The dataset is split into training and testing sets based on date.
+
+## Project Structure
+
+-   `Stock Sentiment Analysis.ipynb`: The main Jupyter Notebook containing all the code for data loading, preprocessing, model training, and evaluation.
     
-    -   **Rule-Based (Simplest for no ML knowledge):** You can start with simple rules:
-        -   "If average daily sentiment for SP500 is > 0.6 for 3 consecutive days, predict market will go up next day."
-        -   "If daily negative sentiment count for a stock exceeds 5, predict price drop."
-    -   **Basic Correlations/Stats (Python):** You can use `pandas.corr()` to see if there's a correlation between your sentiment scores and future price movements. This isn't "prediction" in a complex ML sense, but it provides insights.
-    -   **Basic Python Scripting:** You can write simple Python code to test these rules against historical data (backtesting). For example:
-        -   Calculate the actual market movement (`(next_day_close - current_day_close) / current_day_close`).
-        -   Compare your rule-based prediction with the actual movement to calculate accuracy.
-4.  **Evaluation (Python):**
+-   `Data.csv`: (Assumed) The dataset used for the project.
     
-    -   You'll primarily evaluate your rule-based system's accuracy: "How often did my 'positive sentiment = market up' rule correctly predict an upward movement?"
-    -   You can calculate simple metrics like a "hit rate" or "accuracy" for your predictions.
 
-#### Phase 4: Visualization and Reporting (Python)
+## Setup and Installation
 
-1.  **Dashboard/Reporting:**
-    -   Use `Matplotlib` and `Seaborn` (which you already listed in your skills) to create plots.
-    -   Visualize:
-        -   Sentiment over time, overlaid with stock prices or market indices.
-        -   Distribution of positive/negative/neutral articles.
-        -   Comparison of predicted vs. actual market movements.
-    -   `Plotly` or `Dash` (if you want interactive dashboards, but this might be an add-on after the core project) are also Python-based.
+To run this project, you need Python and the following libraries installed:
 
-### Advantages of this approach for you:
+1.  **Clone the repository (or download the files):**
+    
+    ```
+    git clone https://github.com/your-username/stock-sentiment-analysis.git
+    cd stock-sentiment-analysis
+    
+    ```
+    
+    (Note: Replace `your-username` with your actual GitHub username if you create a repo for this.)
+    
+2.  **Install dependencies:**
+    
+    ```
+    pip install pandas scikit-learn
+    
+    ```
+    
 
--   **Leverages existing skills:** Strong Python foundation.
--   **Avoids complex ML/NLP training:** No need to collect vast labeled datasets or understand intricate model architectures. The LLM does the heavy lifting.
--   **Focus on Prompt Engineering:** This is a highly valuable and in-demand skill in the age of Gen AI.
--   **Rapid Prototyping:** You can get a working sentiment analysis and basic prediction system up much faster.
+## Usage
 
-### Key Considerations:
+1.  **Ensure `Data.csv` is in the same directory** as `Stock Sentiment Analysis.ipynb`.
+    
+2.  **Open the Jupyter Notebook:**
+    
+    ```
+    jupyter notebook "Stock Sentiment Analysis.ipynb"
+    
+    ```
+    
+3.  **Run all cells** in the notebook. The output will display:
+    
+    -   The head of the processed dataset.
+        
+    -   The confusion matrix.
+        
+    -   The accuracy score.
+        
+    -   The classification report (precision, recall, f1-score) for the sentiment predictions.
+        
 
--   **Cost:** Using OpenAI's API incurs costs based on token usage. Be mindful of this, especially during extensive testing or processing large datasets.
--   **Rate Limits:** OpenAI APIs have rate limits. Your Python scripts will need to handle these (e.g., using `time.sleep()` or retry mechanisms).
--   **LLM Hallucinations/Consistency:** While powerful, LLMs can sometimes "hallucinate" or provide inconsistent outputs. Careful prompt engineering and post-processing of results are important.
--   **Nuance vs. Simplicity:** While LLMs are good at nuance, extracting highly structured, consistent financial sentiment (e.g., "is this positive for _this specific bond issue_ versus _the company's overall stock_?") requires very precise prompting and careful validation. Start simple.
+## Results
 
-This revised approach used to tackle the project effectively with the power of Gen AI.
+The current model achieves an accuracy of approximately **84.13%** on the test dataset, as indicated by the classification report.
+
+```
+[[139  47]
+ [ 13 179]]
+0.8412698412698413
+              precision    recall  f1-score   support
+
+           0       0.91      0.75      0.82       186
+           1       0.79      0.93      0.86       192
+
+   micro avg       0.84      0.84      0.84       378
+   macro avg       0.85      0.84      0.84       378
+weighted avg       0.85      0.84      0.84       378
+
+```
+
+## Future Enhancements
+
+-   Explore more advanced NLP techniques (e.g., TF-IDF, Word Embeddings, or Transformer-based models from Hugging Face for more nuanced sentiment capture).
+    
+-   Integrate with real-time news APIs for live sentiment analysis.
+    
+-   Combine sentiment features with other technical indicators for enhanced prediction models.
+    
+-   Implement a time-series forecasting component to predict actual stock price movements based on sentiment.
+    
+-   Develop a user interface or dashboard for visualizing sentiment trends and predictions.
+    
+-   Experiment with deep learning models (e.g., LSTMs, GRUs) for sequential data.
+    
+
+## Contact
+
+For any questions or collaborations, feel free to reach out.
+
+Dhritionly
+
+GitHub Profile (Please replace with your actual GitHub profile link)
